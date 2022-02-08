@@ -3,7 +3,7 @@ import RequestMetadata from "./request/RequestMetadata";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
-import { Container, Grid, Tab, Header, Image } from "semantic-ui-react";
+import { Container, Grid, Tab } from "semantic-ui-react";
 import { Timeline } from "./timeline";
 
 class RequestDetails extends Component {

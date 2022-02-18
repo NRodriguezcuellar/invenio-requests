@@ -1,6 +1,6 @@
 import React from "react";
 import Overridable from "react-overridable";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
+import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import PropTypes from "prop-types";
 
@@ -14,7 +14,7 @@ CommentEditor.propTypes = {
   config: PropTypes.object,
   id: PropTypes.string,
   disabled: PropTypes.bool,
-  onReady: PropTypes.func,
+  onInit: PropTypes.func,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
@@ -25,6 +25,6 @@ CommentEditor.defaultProps = {
 };
 
 export default Overridable.component(
-  "InvenioRequests.TimelineEventEditor",
+  "InvenioRequests.CommentEditor",
   CommentEditor
 );

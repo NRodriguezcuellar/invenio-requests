@@ -11,11 +11,11 @@ import { Feed, Image, Container, Dropdown, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 import { SaveButton, CancelButton } from "../components/Buttons";
-import { TimelineEventBody } from "./TimelineEventBody";
+import { EventBody } from "../components/EventBody";
 import { i18next } from "@translations/invenio_requests/i18next";
 import { DateTime } from "luxon";
 
-class TimelineEvent extends Component {
+class TimelineCommentEvent extends Component {
   constructor(props) {
     super(props);
 
@@ -45,7 +45,7 @@ class TimelineEvent extends Component {
     const commentCanBeDeleted = event.payload;
 
     return (
-      <Overridable id="TimelineEvent.layout" event={event}>
+      <Overridable id={`TimelineEvent.${event.type}.layout`} event={event}>
         <Feed.Event>
           <Feed.Label>
             <Image
@@ -95,7 +95,7 @@ class TimelineEvent extends Component {
                   }
                 />
               ) : (
-                <TimelineEventBody
+                <EventBody
                   content={event?.payload?.content}
                   format={event?.payload?.format}
                 />
@@ -122,7 +122,7 @@ class TimelineEvent extends Component {
   }
 }
 
-TimelineEvent.propTypes = {
+TimelineCommentEvent.propTypes = {
   event: PropTypes.object.isRequired,
   deleteComment: PropTypes.func.isRequired,
   updateComment: PropTypes.func.isRequired,
@@ -132,10 +132,10 @@ TimelineEvent.propTypes = {
   error: PropTypes.string,
 };
 
-TimelineEvent.defaultProps = {
+TimelineCommentEvent.defaultProps = {
   isLoading: false,
   isEditing: false,
   error: undefined,
 };
 
-export default Overridable.component("TimelineEvent", TimelineEvent);
+export default Overridable.component("TimelineEvent", TimelineCommentEvent);

@@ -6,6 +6,7 @@
 import { http } from "./config";
 import _isEmpty from "lodash/isEmpty";
 
+
 export class RequestLinksExtractor {
   #urls;
 
@@ -40,6 +41,7 @@ export class RequestLinksExtractor {
 
 export class InvenioRequestsAPI {
   #urls;
+
   constructor(requestLinksExtractor) {
     this.#urls = requestLinksExtractor;
   }
@@ -52,7 +54,7 @@ export class InvenioRequestsAPI {
     return await http.post(this.#urls.comments, payload);
   };
 
-  performAction = async (action, commentContent=null) => {
+  performAction = async (action, commentContent = null) => {
     let payload = {};
     if (!_isEmpty(commentContent)) {
       payload = {

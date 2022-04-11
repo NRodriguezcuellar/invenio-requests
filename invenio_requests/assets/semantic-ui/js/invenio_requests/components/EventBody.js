@@ -7,7 +7,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export const TimelineEventBody = ({ content, format }) => {
+export const EventBody = ({ content, format }) => {
   return format === "html" ? (
     <div dangerouslySetInnerHTML={{ __html: content }} />
   ) : (
@@ -15,12 +15,12 @@ export const TimelineEventBody = ({ content, format }) => {
   );
 };
 
-TimelineEventBody.propTypes = {
+EventBody.propTypes = {
   content: PropTypes.string,
   format: PropTypes.string,
 };
 
-TimelineEventBody.defaultProps = {
+EventBody.defaultProps = {
   content: "",
   format: "",
 };

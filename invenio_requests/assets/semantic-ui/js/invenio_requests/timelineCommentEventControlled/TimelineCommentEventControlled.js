@@ -6,10 +6,11 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TimelineEvent } from "../timelineEvent";
+import { TimelineEvent } from "../timelineEvents";
 import { errorSerializer } from "../api/serializers";
+import Overridable from "react-overridable";
 
-class TimelineEventWithState extends Component {
+class TimelineCommentEventControlled extends Component {
   constructor(props) {
     super(props);
 
@@ -76,11 +77,14 @@ class TimelineEventWithState extends Component {
   }
 }
 
-TimelineEventWithState.propTypes = {
+TimelineCommentEventControlled.propTypes = {
   event: PropTypes.object.isRequired,
   updateComment: PropTypes.func.isRequired,
   deleteComment: PropTypes.func.isRequired,
   openConfirmModal: PropTypes.func.isRequired,
 };
 
-export default TimelineEventWithState;
+export default Overridable.component(
+  "TimelineEventControlled",
+  TimelineCommentEventControlled
+);

@@ -11,7 +11,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Overridable from "react-overridable";
 import { Container, Feed, Segment, Divider } from "semantic-ui-react";
-import { TimelineEventWithState } from "../timelineEventWithState";
+import { TimelineCommentEventControlled } from "../timelineCommentEventControlled";
 import { TimelineCommentEditor } from "../timelineCommentEditor";
 import { DeleteConfirmationModal } from "../components/modals/DeleteConfirmationModal";
 
@@ -47,15 +47,20 @@ class TimelineFeed extends Component {
       <Loader isLoading={loading}>
         <Error error={error}>
           <Overridable id="TimelineFeed.layout" {...this.props}>
-            <Container>
+            <Container id="request-timeline">
               <Segment className="borderless shadowless">
                 <Feed>
-                  {timeline.hits?.hits.map((comment) => (
-                    <TimelineEventWithState
-                      key={comment.id}
-                      event={comment}
-                      openConfirmModal={this.onOpenModal}
-                    />
+                  {timeline.hits?.hits.map((event) => (
+                    <Overridable
+                      id={`TimelineFeed.eventComponent.${event.type}`}
+                      event={event}
+                    >
+                      <TimelineCommentEventControlled
+                        key={event.id}
+                        event={event}
+                        openConfirmModal={this.onOpenModal}
+                      />
+                    </Overridable>
                   ))}
                 </Feed>
                 <Divider />

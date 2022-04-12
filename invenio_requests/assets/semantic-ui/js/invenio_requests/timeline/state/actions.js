@@ -56,6 +56,11 @@ export const fetchTimeline = (loadingState = true) => {
       });
 
       const dataWithMock = (data) => {
+        data.hits.hits.push(data.hits.hits[0])
+        data.hits.hits[0] = mockedRequestStatusEvents[0];
+
+        data.hits.hits = data.hits.hits.concat(mockedRequestStatusEvents);
+        data.hits.hits.push(data.hits.hits[0])
         data.hits.hits = data.hits.hits.concat(mockedRequestStatusEvents);
 
         return data;

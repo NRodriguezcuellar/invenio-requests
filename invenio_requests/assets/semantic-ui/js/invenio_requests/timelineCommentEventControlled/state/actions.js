@@ -5,7 +5,9 @@
 // under the terms of the MIT License; see LICENSE file for more details.
 
 import {
+  CHANGE_PAGE,
   clearTimelineInterval,
+  fetchTimeline,
   IS_REFRESHING,
   setTimelineInterval,
   SUCCESS,
@@ -38,15 +40,30 @@ export const updateComment = ({ content, format, event }) => {
 export const deleteComment = ({ event }) => {
   return async (dispatch, getState, config) => {
     dispatch(clearTimelineInterval());
+    const timelineState = getState().timeline;
     const commentsApi = config.requestEventsApi(event.links);
 
     dispatch({ type: IS_REFRESHING });
 
     const response = await commentsApi.deleteComment();
+    const deletionLogEvent = response.data;
+
+    const currentPage = timelineState.page;
+    const currentSize = timelineState.size;
+    const totalLength = timelineState.data.hits.total;
+    const totalPages = Math.ceil(totalLength / currentSize);
+    const onLastPage = currentPage === totalPages;
+
+    const shouldSkipEventPush = !onLastPage;
 
     dispatch({
       type: SUCCESS,
-      payload: _newStateWithDelete(event.id, getState().timeline.data),
+      payload: _newStateWithDelete(
+        event.id,
+        deletionLogEvent,
+        getState,
+        shouldSkipEventPush
+      ),
     });
 
     dispatch(setTimelineInterval());
@@ -69,14 +86,23 @@ const _newStateWithUpdate = (updatedComment, currentState) => {
   return timelineState;
 };
 
-const _newStateWithDelete = (eventId, currentState) => {
-  const timelineState = _cloneDeep(currentState);
+const _newStateWithDelete = (
+  eventId,
+  deletionLogEvent,
+  currentState,
+  shouldSkipEventPush
+) => {
+  const timelineState = _cloneDeep(currentState().timeline.data);
 
-  const currentHits = timelineState.hits.hits;
+  timelineState.hits.hits = timelineState.hits.hits.filter(
+    (event) => event.id !== eventId
+  );
 
-  const currentComment = currentHits.find((comment) => comment.id === eventId);
+  if (shouldSkipEventPush) {
+    return timelineState;
+  }
 
-  delete currentComment.payload;
+  timelineState.hits.hits.push(deletionLogEvent);
 
   return timelineState;
 };

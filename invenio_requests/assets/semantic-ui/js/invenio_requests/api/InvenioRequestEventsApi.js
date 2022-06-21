@@ -36,6 +36,10 @@ export class InvenioRequestEventsApi {
   };
 
   deleteComment = async () => {
-    return await http.delete(this.#links.eventUrl);
+    return await http.delete(this.#links.eventUrl, {
+      params: {
+        expand: 1,
+      },
+    });
   };
 }

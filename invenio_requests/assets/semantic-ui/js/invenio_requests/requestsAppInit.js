@@ -11,6 +11,7 @@ import {
   TimelineAcceptEvent,
   TimelineCancelEvent,
   TimelineDeclineEvent,
+  TimelineDeleteCommentEvent,
   TimelineExpireEvent,
   TimelineUnknownEvent,
 } from "./timelineEvents";
@@ -36,9 +37,7 @@ const request = JSON.parse(requestDetailsDiv.dataset.record);
 const defaultQueryParams = JSON.parse(
   requestDetailsDiv.dataset.defaultQueryConfig
 );
-const userAvatar = JSON.parse(
-  requestDetailsDiv.dataset.userAvatar
-);
+const userAvatar = JSON.parse(requestDetailsDiv.dataset.userAvatar);
 
 const overriddenComponents = {
   "TimelineEvent.layout.unknown": TimelineUnknownEvent,
@@ -46,6 +45,7 @@ const overriddenComponents = {
   "TimelineEvent.layout.accepted": TimelineAcceptEvent,
   "TimelineEvent.layout.expired": TimelineExpireEvent,
   "TimelineEvent.layout.cancelled": TimelineCancelEvent,
+  "TimelineEvent.layout.comment_deleted": TimelineDeleteCommentEvent,
   "RequestStatus.layout.submitted": SubmitStatus,
   "RequestStatus.layout.deleted": DeleteStatus,
   "RequestStatus.layout.accepted": AcceptStatus,

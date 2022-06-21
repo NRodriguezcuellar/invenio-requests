@@ -111,16 +111,19 @@ class RequestCommentsResource(RecordResource):
         )
         return item.to_dict(), 200
 
+    @request_extra_args
     @item_view_args_parser
     @request_headers
+    @response_handler()
     def delete(self):
         """Delete a comment."""
-        self.service.delete(
+        item = self.service.delete(
             identity=g.identity,
             id_=resource_requestctx.view_args["comment_id"],
             revision_id=resource_requestctx.headers.get("if_match"),
+            expand=resource_requestctx.args.get("expand", False),
         )
-        return "", 204
+        return item.to_dict(), 200
 
     @list_view_args_parser
     @request_extra_args

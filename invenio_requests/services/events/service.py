@@ -129,7 +129,7 @@ class RequestEventsService(RecordService):
         )
 
     @unit_of_work()
-    def delete(self, identity, id_, revision_id=None, uow=None):
+    def delete(self, identity, id_, revision_id=None, uow=None, expand=False):
         """Delete a comment (only comments can be deleted)."""
         event = self._get_event(id_)
         request_id = event.request_id
@@ -156,8 +156,10 @@ class RequestEventsService(RecordService):
             )
         )
 
-        self.create(identity, request_id, data, LogEventType, uow=uow)
-        return True
+        deletion_log_event = self.create(
+            identity, request_id, data, LogEventType, uow=uow, expand=expand
+        )
+        return deletion_log_event
 
     def search(self, identity, request_id, params=None, es_preference=None, **kwargs):
         """Search for events for a given request matching the querystring."""
